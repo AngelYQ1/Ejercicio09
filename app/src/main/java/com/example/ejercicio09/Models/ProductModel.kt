@@ -14,5 +14,4 @@ data class ProductModel(
     @SerializedName("category") val category: String?,
     @SerializedName("thumbnail") val thumbnail: String?,
     @SerializedName("images") val images: List<String>?
-
 )
