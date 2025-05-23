@@ -143,7 +143,7 @@ fun ScreenInicio() {
         Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Bienvenido a la app de Productos", style = MaterialTheme.typography.headlineMedium)
+        Text(text = "Aplicación de Productos - DummyJson", style = MaterialTheme.typography.headlineMedium)
     }
 }
 
