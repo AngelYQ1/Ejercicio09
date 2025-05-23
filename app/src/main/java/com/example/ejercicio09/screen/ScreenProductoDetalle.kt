@@ -111,4 +111,3 @@ fun ScreenProductoDetalle(navController: NavHostController, servicio: ProductApi
         }
     }
 }
-
