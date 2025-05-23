@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavArgumentBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -43,7 +42,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import com.example.ejercicio09.Models.ProductModel
 import com.example.ejercicio09.screen.ScreenProductoDetalle
 import com.example.ejercicio09.screen.ScreenProductos
-import kotlin.jvm.java
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,3 +73,83 @@ fun ProgPrincipal9() {
         }
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BarraSuperior() {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = "DummyJSON Products",
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        )
+    )
+}
+
+@Composable
+fun BarraInferior(navController: NavHostController) {
+    NavigationBar(containerColor = Color.LightGray) {
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.Home, contentDescription = "Inicio") },
+            label = { Text("Inicio") },
+            selected = navController.currentDestination?.route == "inicio",
+            onClick = { navController.navigate("inicio") }
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Outlined.List, contentDescription = "Productos") },
+            label = { Text("Productos") },
+            selected = navController.currentDestination?.route == "productos",
+            onClick = { navController.navigate("productos") }
+        )
+    }
+}
+
+@Composable
+fun Contenido(
+    pv: PaddingValues,
+    navController: NavHostController,
+    servicio: ProductApiService
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(pv)
+    ) {
+        NavHost(
+            navController = navController,
+            startDestination = "inicio"
+        ) {
+            composable("inicio") { ScreenInicio() }
+            composable("productos") { ScreenProductos(navController, servicio) }
+            composable(
+                "productoDetalle/{id}",
+                arguments = listOf(navArgument("id") { type = NavType.IntType })
+            ) {
+                val id = it.arguments?.getInt("id") ?: 0
+                ScreenProductoDetalle(navController, servicio, id)
+            }
+        }
+    }
+}
+
+@Composable
+fun ScreenInicio() {
+    Box(
+        Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Bienvenido a la app de Productos", style = MaterialTheme.typography.headlineMedium)
+    }
+}
+
+
+
+
+
+
+
